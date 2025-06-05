@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SonyLiv Live by @crictos99</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SonyLIV Live by @crictos99</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -12,7 +12,7 @@
       background: linear-gradient(135deg, #000428, #004e92);
       color: #fff;
       text-align: center;
-      user-select: none; /* Prevent text selection */
+      user-select: none;
     }
 
     .container {
@@ -35,7 +35,7 @@
       font-size: 2em;
       font-weight: bold;
       text-transform: uppercase;
-      text-shadow: 0 0 10px #000, 0 0 20px #000; /* Changed glow color to black */
+      text-shadow: 0 0 10px #000, 0 0 20px #000;
     }
 
     .telegram-box {
@@ -151,7 +151,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
       .match-title { font-size: 1.2em; }
       .match-status { font-size: 0.9em; padding: 6px 10px; }
@@ -168,8 +167,7 @@
 <body>
   <div class="container">
     <div class="header-box">
-      <h1>SonyLiv Live by @crictos99</h1>
-      <!-- Added "Join our Telegram" link -->
+      <h1>SonyLIV Live by @crictos99</h1>
       <a href="https://t.me/crictos99" class="telegram-box" target="_blank">Join our Telegram</a>
     </div>
     <div id="loader" class="loader"><div></div></div>
@@ -185,16 +183,17 @@
     // Disable F12, Ctrl+Shift+I, and other developer tools shortcuts
     document.addEventListener('keydown', (event) => {
       if (
-        (event.key === 'F12') || // F12
-        (event.ctrlKey && event.shiftKey && event.key === 'I') || // Ctrl+Shift+I
-        (event.ctrlKey && event.shiftKey && event.key === 'J') || // Ctrl+Shift+J
-        (event.ctrlKey && event.key === 'U') // Ctrl+U (View Source)
+        (event.key === 'F12') ||
+        (event.ctrlKey && event.shiftKey && event.key === 'I') ||
+        (event.ctrlKey && event.shiftKey && event.key === 'J') ||
+        (event.ctrlKey && event.key === 'U')
       ) {
         event.preventDefault();
       }
     });
 
-    const apiUrl = "https://raw.githubusercontent.com/abid58b/SonyLivPlayList/refs/heads/main/sonyliv.json";
+    // Correct URL to fetch JSON from GitHub
+    const apiUrl = "https://raw.githubusercontent.com/drmlive/sliv-live-events/refs/heads/main/sonyliv.json";
 
     async function fetchMatches() {
       try {
@@ -205,12 +204,7 @@
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
-        console.log("Fetched Data:", data);
-
-        if (!data.matches || !Array.isArray(data.matches)) {
-          console.error("Expected 'matches' array but got:", data);
-          return;
-        }
+        if (!data.matches || !Array.isArray(data.matches)) return;
 
         const matchesContainer = document.getElementById("matches");
         matchesContainer.innerHTML = "";
@@ -222,9 +216,8 @@
           matchCard.className = "match-card";
 
           let statusClass = match.isLive ? "live" : "upcoming";
-          let videoUrl = `https://shz.al/xFc7.html/?videoUrl=${encodeURIComponent(match.contentId)}`;
+          let videoUrl = `play.php?id=${encodeURIComponent(match.contentId)}`;
 
-          // Extract teams from event_name (removes "Upcoming -" and other extra text)
           let eventName = match.event_name.replace(/^Upcoming - /, "").split(" - ")[0];
 
           matchCard.innerHTML = `
