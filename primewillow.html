@@ -83,7 +83,7 @@
           const keyPair = playback.keys[0].split(":");
           const kid = keyPair[0];
           const key = keyPair[1];
-          const playerUrl = `player.html?mpd=${encodeURIComponent(mpd)}&kid=${kid}&key=${key}&poster=${encodeURIComponent(event.cover)}&title=${encodeURIComponent(event.title)}`;
+          const playerUrl = `https://crictos99.pages.dev/player.html?mpd=${encodeURIComponent(mpd)}&kid=${kid}&key=${key}&poster=${encodeURIComponent(event.cover)}&title=${encodeURIComponent(event.title)}`;
           window.location.href = playerUrl;
         };
 
@@ -94,3 +94,4 @@
   </script>
 </body>
 </html>
+
