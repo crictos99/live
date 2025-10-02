@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prime Willow | @crictos99</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f12;
+      color: #fff;
+    }
+    header {
+      text-align: center;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      background: #1a1a1d;
+      color: #00c853;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+      gap: 18px;
+      padding: 20px;
+    }
+    .card {
+      background: #161617;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .3s;
+    }
+    .card:hover { transform: scale(1.03); }
+    .card img {
+      width: 100%;
+      display: block;
+      height: 160px;
+      object-fit: cover;
+    }
+    .info { padding: 12px; }
+    .title { font-size: 16px; font-weight: bold; margin-bottom: 6px; }
+    .status {
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+    .live { background: #ff1744; color: #fff; }
+    .upcoming { background: #00c853; color: #fff; }
+  </style>
+</head>
+<body>
+  <header>📺 Prime Willow Live Matches</header>
+  <div class="grid" id="events"></div>
+
+  <script>
+    async function loadEvents() {
+      const res = await fetch("https://raw.githubusercontent.com/drmlive/willow-live-events/refs/heads/main/willow.json");
+      const data = await res.json();
+      const container = document.getElementById("events");
+
+      data.forEach(event => {
+        if(event.contentType !== "event") return;
+
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <img src="${event.cover}" alt="${event.title}">
+          <div class="info">
+            <div class="title">${event.title}</div>
+            <div class="status ${event.status === 'live' ? 'live':'upcoming'}">
+              ${event.status.toUpperCase()}
+            </div>
+          </div>
+        `;
+
+        div.onclick = () => {
+          const playback = event.playback_data;
+          const mpd = playback.urls[0].url;
+          const keyPair = playback.keys[0].split(":");
+          const kid = keyPair[0];
+          const key = keyPair[1];
+          const playerUrl = `player.html?mpd=${encodeURIComponent(mpd)}&kid=${kid}&key=${key}&poster=${encodeURIComponent(event.cover)}&title=${encodeURIComponent(event.title)}`;
+          window.location.href = playerUrl;
+        };
+
+        container.appendChild(div);
+      });
+    }
+    loadEvents();
+  </script>
+</body>
+</html>
